@@ -48,13 +48,13 @@ export default async function HomePage({
       <div className="relative mb-12 sm:mb-16">
         <div className="animate-hero-line absolute -left-4 top-0 h-24 w-1 rounded-full bg-gradient-to-b from-orange-500 to-amber-500 opacity-80 dark:from-orange-400 dark:to-amber-600 sm:left-0" />
         <div className="animate-hero-content pl-4 sm:pl-8">
-          <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-orange-600 uppercase dark:text-orange-400">
+          <p className="animate-hero-content mb-3 text-xs font-semibold tracking-[0.25em] text-orange-600 uppercase dark:text-orange-400">
             Blog platform
           </p>
-          <h1 className="font-display max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-stone-900 sm:text-5xl md:text-6xl dark:text-stone-50">
+          <h1 className="animate-hero-title font-display max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-stone-900 sm:text-5xl md:text-6xl dark:text-stone-50">
             Read, search, and discuss posts with AI-powered summaries.
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-600 dark:text-stone-400">
+          <p className="animate-hero-subtitle mt-5 max-w-xl text-base leading-relaxed text-stone-600 dark:text-stone-400">
             Each post includes an automatic ~200 word summary so you can scan the feed before you open the full article.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default async function HomePage({
             </p>
           )}
         </div>
-        <form method="get" className="flex w-full items-center gap-2 lg:max-w-md">
+        <form method="get" className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-2 lg:max-w-md">
           <input type="hidden" name="page" value="1" />
           <div className="relative min-w-0 flex-1">
             <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-stone-400" aria-hidden>
@@ -86,7 +86,7 @@ export default async function HomePage({
           </div>
           <button
             type="submit"
-            className="shrink-0 rounded-full bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white"
+            className="w-full shrink-0 rounded-full bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white sm:w-auto"
           >
             Search
           </button>
@@ -132,7 +132,7 @@ export default async function HomePage({
       )}
 
       {hasPosts && (
-        <div className="grid gap-8 sm:grid-cols-2 lg:gap-10">
+        <div className="grid gap-8 sm:grid-cols-2 lg:gap-10 xl:grid-cols-3">
           {(posts ?? []).map((p, i) => (
             <PostCard
               key={p.id}

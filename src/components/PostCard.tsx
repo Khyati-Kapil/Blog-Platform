@@ -37,7 +37,7 @@ export function PostCard({ post, animationIndex }: PostCardProps) {
 
   return (
     <article
-      className={`group relative overflow-hidden rounded-2xl border border-stone-200/90 bg-[var(--surface)] shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:border-orange-200/80 hover:shadow-xl hover:shadow-orange-900/5 dark:border-stone-800/90 dark:bg-stone-900/40 dark:hover:border-orange-900/50 dark:hover:shadow-orange-950/20 ${animationIndex !== undefined ? "animate-stagger-card" : ""}`}
+      className={`group relative overflow-hidden rounded-2xl border border-stone-200/90 bg-[var(--surface)] shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:border-orange-200/80 hover:shadow-xl hover:shadow-orange-900/10 dark:border-stone-800/90 dark:bg-stone-900/40 dark:hover:border-orange-900/50 dark:hover:shadow-orange-950/30 ${animationIndex !== undefined ? "animate-stagger-card" : ""}`}
       style={staggerStyle}
     >
       <Link href={`/posts/${post.id}`} className="block outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] dark:focus-visible:ring-offset-stone-950">

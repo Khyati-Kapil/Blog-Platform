@@ -32,28 +32,25 @@ export async function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
         <Link
           href="/"
-          className="group flex items-baseline gap-2 transition-transform duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]"
+          className="group flex items-baseline gap-2 transition-transform duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] animate-logo-in"
         >
           <span className="font-display text-xl font-semibold tracking-tight text-stone-900 transition-colors group-hover:text-orange-700 dark:text-stone-50 dark:group-hover:text-orange-400 sm:text-2xl">
             Blog Platform
           </span>
-          <span className="hidden font-medium text-xs text-orange-600/90 tracking-wide uppercase sm:inline dark:text-orange-400/90">
-            Full-stack blog
-          </span>
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-1 sm:gap-2">
+        <nav className="animate-nav-in flex flex-wrap items-center justify-end gap-1 sm:gap-2">
           <Link href="/" className={navLink}>
             Posts
           </Link>
           {user && (
-            <span className="hidden text-xs font-semibold tracking-[0.18em] text-stone-400 uppercase sm:inline">
+            <span className="hidden text-[10px] font-semibold tracking-[0.18em] text-stone-400 uppercase sm:inline">
               {profile?.name || "Signed in"}
             </span>
           )}
           {canWrite && (
             <Link
               href="/posts/new"
-              className="rounded-full bg-gradient-to-r from-orange-600 to-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-orange-600/25 transition-all duration-200 hover:from-orange-500 hover:to-amber-500 hover:shadow-orange-500/30 active:scale-95"
+              className="rounded-full bg-gradient-to-r from-orange-600 to-amber-600 px-4 py-2 text-xs font-semibold tracking-[0.18em] text-white uppercase shadow-md shadow-orange-600/25 transition-all duration-200 hover:-translate-y-0.5 hover:from-orange-500 hover:to-amber-500 hover:shadow-orange-500/30 active:scale-95 sm:text-sm sm:tracking-normal sm:normal-case"
             >
               New post
             </Link>
@@ -67,7 +64,7 @@ export async function Header() {
             <form action={signOutAction}>
               <button
                 type="submit"
-                className="rounded-full px-3 py-1.5 text-sm font-medium text-stone-500 transition-colors hover:bg-stone-200/80 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-800/80 dark:hover:text-stone-100"
+                className="rounded-full px-3 py-1.5 text-xs font-medium text-stone-500 transition-all duration-200 hover:-translate-y-0.5 hover:bg-stone-200/80 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-800/80 dark:hover:text-stone-100 sm:text-sm"
               >
                 Sign out
               </button>

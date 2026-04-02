@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #fafaf9;
   --foreground: #1c1917;
@@ -12,8 +14,20 @@
   --glow: rgba(234, 88, 12, 0.18);
 }
 
+:root.dark {
+  --background: #0c0a09;
+  --foreground: #fafaf9;
+  --muted: #a8a29e;
+  --surface: #1c1917;
+  --border: #292524;
+  --accent: #fb923c;
+  --accent-bright: #fdba74;
+  --accent-soft: rgba(251, 146, 60, 0.12);
+  --glow: rgba(251, 146, 60, 0.15);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.dark):not(.light) {
     --background: #0c0a09;
     --foreground: #fafaf9;
     --muted: #a8a29e;
@@ -102,6 +116,28 @@ body {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+
+.animate-logo-in {
+  animation: stagger-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.02s;
+  opacity: 0;
+}
+
+.animate-nav-in {
+  animation: stagger-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.12s;
+  opacity: 0;
+}
+
 .animate-page-enter {
   animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -113,6 +149,20 @@ body {
 .animate-hero-content {
   animation: stagger-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: 0.08s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.animate-hero-title {
+  animation: stagger-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.12s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.animate-hero-subtitle {
+  animation: stagger-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.2s;
   opacity: 0;
   animation-fill-mode: forwards;
 }
@@ -135,10 +185,19 @@ body {
   animation: gentle-shine 12s ease infinite;
 }
 
+.animate-shimmer {
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-logo-in,
+  .animate-nav-in,
   .animate-page-enter,
   .animate-hero-line,
   .animate-hero-content,
+  .animate-hero-title,
+  .animate-hero-subtitle,
   .animate-stagger-card,
   .animate-section-fade,
   .hero-gradient-animated {
@@ -146,5 +205,14 @@ body {
     opacity: 1 !important;
     transform: none !important;
     background-position: 0% 50% !important;
+  }
+  .animate-shimmer {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-attachment: scroll;
   }
 }
