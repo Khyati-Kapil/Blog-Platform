@@ -19,11 +19,11 @@ export function RoleSelect({
   );
 
   return (
-    <form action={formAction} className="flex items-center gap-2">
+    <form action={formAction} className="flex flex-wrap items-center gap-2">
       <select
         name="role"
         defaultValue={current}
-        className="rounded-md border border-zinc-300 bg-white px-2 py-1 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+        className="input-focus rounded-full border border-stone-300 bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-stone-800 dark:border-stone-600 dark:bg-stone-900/60 dark:text-stone-200"
       >
         <option value="viewer">viewer</option>
         <option value="author">author</option>
@@ -32,11 +32,13 @@ export function RoleSelect({
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-zinc-200 px-2 py-1 text-xs font-medium text-zinc-900 hover:bg-zinc-300 disabled:opacity-60 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+        className="rounded-full bg-stone-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-stone-800 disabled:opacity-50 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white"
       >
         {pending ? "…" : "Save"}
       </button>
-      {state?.error && <span className="text-xs text-red-600">{state.error}</span>}
+      {state?.error && (
+        <span className="text-xs font-medium text-red-600 dark:text-red-400">{state.error}</span>
+      )}
     </form>
   );
 }

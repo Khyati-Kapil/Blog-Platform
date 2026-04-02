@@ -3,6 +3,9 @@
 import { useActionState } from "react";
 import { addComment, type ActionResult } from "@/app/posts/actions";
 
+const field =
+  "input-focus w-full rounded-xl border border-stone-300 bg-[var(--surface)] px-4 py-3 text-sm text-stone-900 dark:border-stone-600 dark:bg-stone-900/50 dark:text-stone-100";
+
 export function CommentForm({ postId }: { postId: string }) {
   const [state, formAction, pending] = useActionState(
     async (_prev: ActionResult | null, formData: FormData) => addComment(postId, formData),
@@ -10,14 +13,16 @@ export function CommentForm({ postId }: { postId: string }) {
   );
 
   return (
-    <form action={formAction} className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Add a comment</label>
+    <form action={formAction} className="flex flex-col gap-3">
+      <label className="text-sm font-semibold text-stone-800 dark:text-stone-200">
+        Add a comment
+      </label>
       <textarea
         name="comment_text"
         required
-        rows={3}
-        className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
-        placeholder="Share your thoughts…"
+        rows={4}
+        className={field}
+        placeholder="Thoughts, questions, or appreciation…"
       />
       {state?.error && (
         <p className="text-sm text-red-600 dark:text-red-400">{state.error}</p>
@@ -25,7 +30,7 @@ export function CommentForm({ postId }: { postId: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-fit rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900"
+        className="w-fit rounded-full bg-stone-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:opacity-50 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white"
       >
         {pending ? "Posting…" : "Post comment"}
       </button>

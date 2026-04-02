@@ -41,26 +41,52 @@ export default async function HomePage({
     (users ?? []).forEach((u) => names.set(u.id, u.name));
   }
 
+  const hasPosts = !error && posts && posts.length > 0;
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Latest posts</h1>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Search titles and bodies. Summaries are generated when posts are published.
+    <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-12 sm:px-6 sm:py-16">
+      <div className="relative mb-12 sm:mb-16">
+        <div className="animate-hero-line absolute -left-4 top-0 h-24 w-1 rounded-full bg-gradient-to-b from-orange-500 to-amber-500 opacity-80 dark:from-orange-400 dark:to-amber-600 sm:left-0" />
+        <div className="animate-hero-content pl-4 sm:pl-8">
+          <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-orange-600 uppercase dark:text-orange-400">
+            Blog platform
+          </p>
+          <h1 className="font-display max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-stone-900 sm:text-5xl md:text-6xl dark:text-stone-50">
+            Read, search, and discuss posts with AI-powered summaries.
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-600 dark:text-stone-400">
+            Each post includes an automatic ~200 word summary so you can scan the feed before you open the full article.
           </p>
         </div>
-        <form method="get" className="flex w-full max-w-md gap-2 sm:w-auto">
+      </div>
+
+      <div className="animate-section-fade mb-10 flex flex-col gap-6 border-b border-stone-200 pb-10 dark:border-stone-800 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2 className="font-display text-2xl font-semibold text-stone-900 dark:text-stone-50">
+            {q ? "Search results" : "Latest posts"}
+          </h2>
+          {q && (
+            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+              Matching “{q}”
+            </p>
+          )}
+        </div>
+        <form method="get" className="flex w-full items-center gap-2 lg:max-w-md">
           <input type="hidden" name="page" value="1" />
-          <input
-            name="q"
-            defaultValue={q}
-            placeholder="Search…"
-            className="min-w-0 flex-1 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-          />
+          <div className="relative min-w-0 flex-1">
+            <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-stone-400" aria-hidden>
+              ⌕
+            </span>
+            <input
+              name="q"
+              defaultValue={q}
+              placeholder="Search titles and bodies..."
+              className="input-focus w-full rounded-full border border-stone-300 bg-[var(--surface)] py-2.5 pr-4 pl-10 text-sm shadow-inner shadow-stone-200/40 dark:border-stone-700 dark:bg-stone-900/60 dark:shadow-none"
+            />
+          </div>
           <button
             type="submit"
-            className="rounded-md bg-zinc-900 px-3 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+            className="shrink-0 rounded-full bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-white"
           >
             Search
           </button>
@@ -68,55 +94,86 @@ export default async function HomePage({
       </div>
 
       {error && (
-        <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-100">
-          Could not load posts. Check Supabase configuration and that migrations have been applied.
-        </p>
+        <div className="rounded-2xl border border-amber-200/80 bg-amber-50/90 px-5 py-4 text-sm text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-100">
+          <p className="font-semibold">Could not load posts.</p>
+          <p className="mt-2 opacity-90">
+            Check Supabase URL and anon key in <code className="rounded bg-amber-100/90 px-1.5 py-0.5 text-xs dark:bg-amber-900/80">.env.local</code>,
+            restart dev, and run{" "}
+            <code className="rounded bg-amber-100/90 px-1.5 py-0.5 text-xs dark:bg-amber-900/80">supabase/migrations/001_initial_schema.sql</code>.
+          </p>
+          {process.env.NODE_ENV === "development" && (
+            <pre className="mt-3 max-h-40 overflow-auto whitespace-pre-wrap rounded-xl border border-amber-200 bg-white/80 p-3 text-xs dark:border-amber-800 dark:bg-stone-950/60">
+              {error.message}
+              {error.details ? `\n${error.details}` : ""}
+              {error.hint ? `\nHint: ${error.hint}` : ""}
+            </pre>
+          )}
+        </div>
       )}
 
       {!error && (!posts || posts.length === 0) && (
-        <p className="text-zinc-600 dark:text-zinc-400">No posts match your filters yet.</p>
+        <div className="rounded-2xl border border-dashed border-stone-300 bg-[var(--surface)]/60 px-8 py-14 text-center dark:border-stone-700 dark:bg-stone-900/30">
+          {q ? (
+            <p className="text-stone-600 dark:text-stone-400">No posts match your search.</p>
+          ) : (
+            <>
+              <p className="font-display text-lg font-semibold text-stone-900 dark:text-stone-100">
+                No posts yet—your blog is ready for the first one.
+              </p>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                The feed is empty because no posts exist yet. Sign up, have an admin set your role to{" "}
+                <strong className="text-stone-800 dark:text-stone-200">author</strong> or{" "}
+                <strong className="text-stone-800 dark:text-stone-200">admin</strong>, then use{" "}
+                <strong className="text-stone-800 dark:text-stone-200">New post</strong> to publish.
+              </p>
+            </>
+          )}
+        </div>
       )}
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {(posts ?? []).map((p) => (
-          <PostCard
-            key={p.id}
-            post={{
-              id: p.id,
-              title: p.title,
-              image_url: p.image_url,
-              summary: p.summary,
-              created_at: p.created_at,
-              authorName: names.get(p.author_id) ?? null,
-            }}
-          />
-        ))}
-      </div>
+      {hasPosts && (
+        <div className="grid gap-8 sm:grid-cols-2 lg:gap-10">
+          {(posts ?? []).map((p, i) => (
+            <PostCard
+              key={p.id}
+              animationIndex={i}
+              post={{
+                id: p.id,
+                title: p.title,
+                image_url: p.image_url,
+                summary: p.summary,
+                created_at: p.created_at,
+                authorName: names.get(p.author_id) ?? null,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
-      {totalPages > 1 && (
-        <nav className="mt-10 flex items-center justify-center gap-4 text-sm">
+      {hasPosts && totalPages > 1 && (
+        <nav className="mt-14 flex items-center justify-center gap-2 text-sm">
           {page > 1 ? (
             <Link
               href={`/?page=${page - 1}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-              className="text-zinc-700 underline dark:text-zinc-300"
+              className="rounded-full border border-stone-300 px-4 py-2 font-medium text-stone-700 transition hover:bg-stone-100 dark:border-stone-600 dark:text-stone-300 dark:hover:bg-stone-800"
             >
-              Previous
+              ← Previous
             </Link>
           ) : (
-            <span className="text-zinc-400">Previous</span>
+            <span className="rounded-full px-4 py-2 text-stone-400">← Previous</span>
           )}
-          <span className="text-zinc-600 dark:text-zinc-400">
-            Page {page} of {totalPages}
+          <span className="px-3 font-medium text-stone-500 dark:text-stone-400">
+            {page} / {totalPages}
           </span>
           {page < totalPages ? (
             <Link
               href={`/?page=${page + 1}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-              className="text-zinc-700 underline dark:text-zinc-300"
+              className="rounded-full border border-stone-300 px-4 py-2 font-medium text-stone-700 transition hover:bg-stone-100 dark:border-stone-600 dark:text-stone-300 dark:hover:bg-stone-800"
             >
-              Next
+              Next →
             </Link>
           ) : (
-            <span className="text-zinc-400">Next</span>
+            <span className="rounded-full px-4 py-2 text-stone-400">Next →</span>
           )}
         </nav>
       )}

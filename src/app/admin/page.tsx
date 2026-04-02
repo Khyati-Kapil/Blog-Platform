@@ -39,59 +39,77 @@ export default async function AdminPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Admin</h1>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Manage roles and monitor recent comments across all posts.
+    <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6 sm:py-16">
+      <p className="text-xs font-semibold tracking-[0.2em] text-orange-600 uppercase dark:text-orange-400">
+        Blog admin
+      </p>
+      <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl dark:text-stone-50">
+        Admin
+      </h1>
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+        Promote readers to authors, watch discussion across the site, and jump to any thread.
       </p>
 
-      <section className="mt-10">
-        <h2 className="text-lg font-semibold">Users</h2>
-        <div className="mt-4 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
-          <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="bg-zinc-100 text-xs uppercase text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400">
-              <tr>
-                <th className="px-4 py-3">Name</th>
-                <th className="px-4 py-3">Email</th>
-                <th className="px-4 py-3">Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(users ?? []).map((u) => (
-                <tr key={u.id} className="border-t border-zinc-200 dark:border-zinc-800">
-                  <td className="px-4 py-3">{u.name}</td>
-                  <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{u.email}</td>
-                  <td className="px-4 py-3">
-                    <RoleSelect userId={u.id} current={u.role as "viewer" | "author" | "admin"} />
-                  </td>
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold text-stone-900 dark:text-stone-50">
+          People & roles
+        </h2>
+        <div className="mt-4 overflow-hidden rounded-2xl border border-stone-200/90 shadow-lg shadow-stone-900/5 dark:border-stone-800 dark:shadow-black/30">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-left text-sm">
+              <thead className="border-b border-stone-200 bg-stone-100/80 text-[10px] font-bold tracking-wider text-stone-500 uppercase dark:border-stone-800 dark:bg-stone-900/80 dark:text-stone-400">
+                <tr>
+                  <th className="px-5 py-4">Name</th>
+                  <th className="px-5 py-4">Email</th>
+                  <th className="px-5 py-4">Role</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-stone-200 bg-[var(--surface)]/50 dark:divide-stone-800 dark:bg-stone-900/30">
+                {(users ?? []).map((u) => (
+                  <tr key={u.id}>
+                    <td className="px-5 py-4 font-medium text-stone-900 dark:text-stone-100">{u.name}</td>
+                    <td className="px-5 py-4 text-stone-600 dark:text-stone-400">{u.email}</td>
+                    <td className="px-5 py-4">
+                      <RoleSelect userId={u.id} current={u.role as "viewer" | "author" | "admin"} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-lg font-semibold">Recent comments</h2>
+      <section className="mt-14">
+        <h2 className="font-display text-xl font-semibold text-stone-900 dark:text-stone-50">
+          Recent comments
+        </h2>
         <ul className="mt-4 flex flex-col gap-3">
           {(recentComments ?? []).map((c) => (
             <li
               key={c.id}
-              className="rounded-lg border border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950"
+              className="rounded-2xl border border-stone-200/90 bg-[var(--surface)]/80 p-5 shadow-sm dark:border-stone-800 dark:bg-stone-900/40"
             >
-              <p className="text-sm text-zinc-800 dark:text-zinc-200">{c.comment_text}</p>
-              <p className="mt-2 text-xs text-zinc-500">
-                {commentNames.get(c.user_id) ?? "User"} ·{" "}
-                <Link href={`/posts/${c.post_id}`} className="underline">
+              <p className="text-sm leading-relaxed text-stone-800 dark:text-stone-200">{c.comment_text}</p>
+              <p className="mt-3 text-xs text-stone-500 dark:text-stone-400">
+                <span className="font-medium text-stone-700 dark:text-stone-300">
+                  {commentNames.get(c.user_id) ?? "User"}
+                </span>
+                {" · "}
+                <Link
+                  href={`/posts/${c.post_id}`}
+                  className="font-semibold text-orange-600 underline decoration-orange-600/30 underline-offset-2 dark:text-orange-400"
+                >
                   {titles.get(c.post_id) ?? "Post"}
-                </Link>{" "}
-                · {new Date(c.created_at).toLocaleString()}
+                </Link>
+                {" · "}
+                {new Date(c.created_at).toLocaleString()}
               </p>
             </li>
           ))}
         </ul>
         {(recentComments ?? []).length === 0 && (
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">No comments yet.</p>
+          <p className="mt-3 text-sm text-stone-600 dark:text-stone-400">No comments yet.</p>
         )}
       </section>
     </div>

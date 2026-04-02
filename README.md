@@ -38,6 +38,7 @@ A full-stack blogging app built with **Next.js (App Router)**, **Supabase Auth +
 
    - Create a project in Supabase.
    - Open **SQL Editor** and run the migration in `supabase/migrations/001_initial_schema.sql` (creates `users`, `posts`, `comments`, RLS policies, storage bucket, and the `on_auth_user_created` trigger).
+   - Optional demo data: after you have at least one **author** or **admin** user, run `supabase/seed_sample_posts.sql` in the SQL Editor. It inserts six on-topic posts only when `posts` is empty (cover images use [picsum.photos](https://picsum.photos)).
    - Under **Authentication → URL configuration**, add your site URL and redirect URL: `http://localhost:3000/auth/callback` (and your production URL + `/auth/callback` after deployment).
 
 4. **Environment variables**

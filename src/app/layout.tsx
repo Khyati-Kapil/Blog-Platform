@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import { Header } from "@/components/Header";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Fraunces({
+  variable: "--font-display",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Blog Platform",
-  description: "Next.js + Supabase blog with AI summaries",
+  title: {
+    default: "Blog Platform",
+    template: "%s · Blog Platform",
+  },
+  description:
+    "A blogging platform built with Next.js, Supabase, and AI-generated post summaries.",
 };
 
 export default function RootLayout({
@@ -26,13 +31,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="flex min-h-dvh flex-col font-sans">
         <Header />
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-zinc-200 py-6 text-center text-xs text-zinc-500 dark:border-zinc-800">
-          Blog Platform · Next.js · Supabase · Google AI
+        <main className="relative flex min-h-0 flex-1 flex-col">{children}</main>
+        <footer className="relative border-t border-stone-200/80 bg-[var(--surface)]/60 py-10 text-center backdrop-blur-sm dark:border-stone-800/80">
+          <p className="text-xs font-medium tracking-[0.2em] text-[var(--muted)] uppercase">
+            Blog Platform
+          </p>
+          <p className="mt-2 text-sm text-[var(--muted)]">
+            Next.js · Supabase · Google Gemini
+          </p>
         </footer>
       </body>
     </html>
