@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommentForm } from "@/components/CommentForm";
+import { SummaryRegenerator } from "@/components/SummaryRegenerator";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function PostPage({
@@ -119,6 +120,15 @@ export default async function PostPage({
           <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-stone-800 dark:text-stone-200">
             {post.summary}
           </p>
+        </section>
+      )}
+      {!post.summary && canEdit && (
+        <section className="mb-12 rounded-2xl border border-amber-200/70 bg-amber-50/70 p-6 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100">
+          <p className="font-semibold">AI summary is missing.</p>
+          <p className="mt-2 opacity-90">
+            Click the button below to generate it now.
+          </p>
+          <SummaryRegenerator postId={post.id} />
         </section>
       )}
 

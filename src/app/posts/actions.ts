@@ -192,6 +192,51 @@ export async function addComment(postId: string, formData: FormData): Promise<Ac
   return { ok: true };
 }
 
+export async function regenerateSummary(postId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: post } = await supabase
+    .from("posts")
+    .select("author_id, body")
+    .eq("id", postId)
+    .single();
+  if (!post) return { error: "Post not found." };
+
+  const { data: profile } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const isAdmin = profile?.role === "admin";
+  const isOwnerAuthor = post.author_id === user.id && profile?.role === "author";
+  if (!isAdmin && !isOwnerAuthor) {
+    return { error: "Not allowed to regenerate summary." };
+  }
+
+  let summary: string | null = null;
+  try {
+    summary = await generatePostSummary(post.body);
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "AI summary failed. Check GOOGLE_AI_API_KEY and try again.";
+    return { error: message };
+  }
+
+  const { error } = await supabase.from("posts").update({ summary }).eq("id", postId);
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/");
+  revalidatePath(`/posts/${postId}`);
+  return { ok: true };
+}
+
 export async function updateUserRole(
   userId: string,
   role: "viewer" | "author" | "admin",

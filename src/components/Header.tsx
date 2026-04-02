@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { SignOutButton } from "@/components/SignOutButton";
+import { signOutAction } from "@/app/auth/actions";
 
 export async function Header() {
   const supabase = await createClient();
@@ -8,18 +8,21 @@ export async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let profile: { role: string } | null = null;
+  let profile: { role: string; name?: string | null } | null = null;
+  let profileError: string | null = null;
   if (user) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("users")
-      .select("role")
+      .select("role, name")
       .eq("id", user.id)
       .single();
     profile = data;
+    profileError = error ? error.message : null;
   }
 
-  const canWrite = profile?.role === "author" || profile?.role === "admin";
-  const isAdmin = profile?.role === "admin";
+  const role = (profile?.role ?? "").trim().toLowerCase();
+  const canWrite = role === "author" || role === "admin";
+  const isAdmin = role === "admin";
 
   const navLink =
     "rounded-full px-3 py-1.5 text-sm font-medium text-stone-600 transition-all duration-200 hover:bg-stone-200/80 hover:text-stone-900 active:scale-95 dark:text-stone-400 dark:hover:bg-stone-800/80 dark:hover:text-stone-100";
@@ -42,10 +45,15 @@ export async function Header() {
           <Link href="/" className={navLink}>
             Posts
           </Link>
+          {user && (
+            <span className="hidden text-xs font-semibold tracking-[0.18em] text-stone-400 uppercase sm:inline">
+              {profile?.name || "Signed in"}
+            </span>
+          )}
           {canWrite && (
             <Link
               href="/posts/new"
-              className={`${navLink} text-orange-700 dark:text-orange-400`}
+              className="rounded-full bg-gradient-to-r from-orange-600 to-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-orange-600/25 transition-all duration-200 hover:from-orange-500 hover:to-amber-500 hover:shadow-orange-500/30 active:scale-95"
             >
               New post
             </Link>
@@ -56,7 +64,14 @@ export async function Header() {
             </Link>
           )}
           {user ? (
-            <SignOutButton />
+            <form action={signOutAction}>
+              <button
+                type="submit"
+                className="rounded-full px-3 py-1.5 text-sm font-medium text-stone-500 transition-colors hover:bg-stone-200/80 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-stone-800/80 dark:hover:text-stone-100"
+              >
+                Sign out
+              </button>
+            </form>
           ) : (
             <>
               <Link href="/login" className={navLink}>
@@ -72,6 +87,11 @@ export async function Header() {
           )}
         </nav>
       </div>
+      {process.env.NODE_ENV === "development" && user && profileError && (
+        <div className="mx-auto w-full max-w-6xl px-4 pb-3 text-[11px] text-stone-400 sm:px-6">
+          <span>users err {profileError}</span>
+        </div>
+      )}
     </header>
   );
 }
