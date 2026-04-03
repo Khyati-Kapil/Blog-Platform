@@ -47,8 +47,7 @@ export default async function PostPage({
 
   const canEdit =
     user &&
-    (profile?.role === "admin" ||
-      (profile?.role === "author" && post.author_id === user.id));
+    (profile?.role === "admin" || post.author_id === user.id);
 
   const canComment = !!user;
 

@@ -6,10 +6,6 @@ import { getSessionProfile } from "@/lib/supabase/server";
 export default async function NewPostPage() {
   const session = await getSessionProfile();
   if (!session) redirect("/login");
-  const role = session.profile?.role;
-  if (role !== "author" && role !== "admin") {
-    redirect("/");
-  }
 
   return (
     <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6 sm:py-16">

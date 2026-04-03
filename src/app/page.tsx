@@ -121,10 +121,8 @@ export default async function HomePage({
                 No posts yet—your blog is ready for the first one.
               </p>
               <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-                The feed is empty because no posts exist yet. Sign up, have an admin set your role to{" "}
-                <strong className="text-stone-800 dark:text-stone-200">author</strong> or{" "}
-                <strong className="text-stone-800 dark:text-stone-200">admin</strong>, then use{" "}
-                <strong className="text-stone-800 dark:text-stone-200">New post</strong> to publish.
+                The feed is empty because no posts exist yet. Sign in and use{" "}
+                <strong className="text-stone-800 dark:text-stone-200">New post</strong> to publish your first entry.
               </p>
             </>
           )}

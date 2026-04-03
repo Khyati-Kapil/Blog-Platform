@@ -21,7 +21,7 @@ export async function Header() {
   }
 
   const role = (profile?.role ?? "").trim().toLowerCase();
-  const canWrite = role === "author" || role === "admin";
+  const canWrite = !!user;
   const isAdmin = role === "admin";
 
   const navLink =

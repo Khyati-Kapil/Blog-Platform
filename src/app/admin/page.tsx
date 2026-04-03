@@ -47,7 +47,7 @@ export default async function AdminPage() {
         Admin
       </h1>
       <p className="mt-3 max-w-xl text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-        Promote readers to authors, watch discussion across the site, and jump to any thread.
+        Manage user roles, watch discussion across the site, and jump to any thread.
       </p>
 
       <section className="mt-12">

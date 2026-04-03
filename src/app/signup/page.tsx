@@ -20,7 +20,7 @@ export default async function SignupPage() {
           Create account
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-          You start as a reader. An admin can promote you to author when you are ready to publish.
+          Create your account and publish right away — every post you create is attributed to you.
         </p>
         <div className="mt-8">
           <SignupForm />

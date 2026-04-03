@@ -27,8 +27,8 @@ export default async function EditPostPage({
   const { data: profile } = await supabase.from("users").select("role").eq("id", user.id).single();
 
   const isAdmin = profile?.role === "admin";
-  const isOwnerAuthor = profile?.role === "author" && post.author_id === user.id;
-  if (!isAdmin && !isOwnerAuthor) {
+  const isOwner = post.author_id === user.id;
+  if (!isAdmin && !isOwner) {
     redirect(`/posts/${id}`);
   }
 

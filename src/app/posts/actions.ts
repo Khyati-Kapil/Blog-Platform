@@ -7,20 +7,12 @@ import { createClient } from "@/lib/supabase/server";
 
 export type ActionResult = { ok?: true; error?: string };
 
-async function requireAuthorOrAdmin() {
+async function requireAuthenticated() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  const { data: profile } = await supabase
-    .from("users")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-  if (profile?.role !== "author" && profile?.role !== "admin") {
-    redirect("/");
-  }
   return { supabase, userId: user.id };
 }
 
@@ -40,7 +32,7 @@ async function requireAdmin() {
 }
 
 export async function createPost(formData: FormData): Promise<ActionResult> {
-  const { supabase, userId } = await requireAuthorOrAdmin();
+  const { supabase, userId } = await requireAuthenticated();
 
   const title = String(formData.get("title") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
@@ -111,9 +103,8 @@ export async function updatePost(postId: string, formData: FormData): Promise<Ac
     .single();
 
   const isAdmin = profile?.role === "admin";
-  const isOwnerAuthor =
-    post.author_id === user.id && profile?.role === "author";
-  if (!isAdmin && !isOwnerAuthor) {
+  const isOwner = post.author_id === user.id;
+  if (!isAdmin && !isOwner) {
     return { error: "Not allowed to edit this post." };
   }
 
@@ -213,8 +204,8 @@ export async function regenerateSummary(postId: string): Promise<ActionResult> {
     .single();
 
   const isAdmin = profile?.role === "admin";
-  const isOwnerAuthor = post.author_id === user.id && profile?.role === "author";
-  if (!isAdmin && !isOwnerAuthor) {
+  const isOwner = post.author_id === user.id;
+  if (!isAdmin && !isOwner) {
     return { error: "Not allowed to regenerate summary." };
   }
 
