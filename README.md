@@ -114,4 +114,7 @@ This project was built with **Cursor** (and similar IDE AI) for scaffolding, ref
 - **Post creation**: Any authenticated user can create posts; the post is attributed to the signed-in user. Owners can edit/delete their own posts; admins can edit/delete any post.
 - **AI summary**: `GOOGLE_AI_API_KEY` on the server only; prompt asks for ~200 words plain text; result persisted in `posts.summary`.
 
+##Demo Video Link
+https://drive.google.com/file/d/1oGvaSFj5HxcnbKin22QjkXndTFgx_pMS/view?usp=drive_link
+
 
