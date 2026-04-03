@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PostForm } from "@/components/PostForm";
-import { deletePost } from "@/app/posts/actions";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function EditPostPage({
@@ -60,20 +59,6 @@ export default async function EditPostPage({
             image_url: post.image_url,
           }}
         />
-      </div>
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-red-200/70 bg-red-50/70 p-4 text-sm text-red-900 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-100">
-        <div>
-          <p className="font-semibold">Delete this post</p>
-          <p className="text-xs opacity-90">This action cannot be undone.</p>
-        </div>
-        <form action={deletePost.bind(null, post.id)}>
-          <button
-            type="submit"
-            className="rounded-full bg-red-600 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white uppercase hover:bg-red-500"
-          >
-            Delete post
-          </button>
-        </form>
       </div>
     </div>
   );
