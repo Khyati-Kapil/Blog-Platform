@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommentForm } from "@/components/CommentForm";
 import { SummaryRegenerator } from "@/components/SummaryRegenerator";
-import { deletePost } from "@/app/posts/actions";
 import { DeletePostButton } from "@/components/DeletePostButton";
 import { createClient } from "@/lib/supabase/server";
 

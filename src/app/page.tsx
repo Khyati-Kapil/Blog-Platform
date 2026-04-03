@@ -47,20 +47,41 @@ export default async function HomePage({
     <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-12 sm:px-6 sm:py-16">
       <div className="relative mb-12 sm:mb-16">
         <div className="animate-hero-line absolute -left-4 top-0 h-24 w-1 rounded-full bg-gradient-to-b from-orange-500 to-amber-500 opacity-80 dark:from-orange-400 dark:to-amber-600 sm:left-0" />
-        <div className="animate-hero-content pl-4 sm:pl-8">
-          <p className="animate-hero-content mb-3 text-xs font-semibold tracking-[0.25em] text-orange-600 uppercase dark:text-orange-400">
-            Blog platform
-          </p>
-          <h1 className="animate-hero-title font-display max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-stone-900 sm:text-5xl md:text-6xl dark:text-stone-50">
-            Read, search, and discuss posts with AI-powered summaries.
-          </h1>
-          <p className="animate-hero-subtitle mt-5 max-w-xl text-base leading-relaxed text-stone-600 dark:text-stone-400">
-            Each post includes an automatic ~200 word summary so you can scan the feed before you open the full article.
-          </p>
+        <div className="grid gap-10 pl-4 sm:pl-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div className="animate-hero-content">
+            <p className="animate-hero-content mb-3 text-xs font-semibold tracking-[0.25em] text-orange-600 uppercase dark:text-orange-400">
+              Blog platform
+            </p>
+            <h1 className="animate-hero-title font-display max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-stone-900 sm:text-5xl md:text-6xl dark:text-stone-50">
+              Read, search, and discuss posts with AI-powered summaries.
+            </h1>
+            <p className="animate-hero-subtitle mt-5 max-w-xl text-base leading-relaxed text-stone-600 dark:text-stone-400">
+              Each post includes an automatic ~200 word summary so you can scan the feed before you open the full article.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link
+                href="/posts/new"
+                className="rounded-full bg-gradient-to-r from-orange-600 to-amber-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-600/20 transition hover:-translate-y-0.5 hover:from-orange-500 hover:to-amber-500"
+              >
+                Start writing
+              </Link>
+              <Link
+                href="#posts"
+                className="rounded-full border border-stone-300 px-6 py-3 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:text-stone-900 dark:border-stone-700 dark:text-stone-300 dark:hover:border-stone-500 dark:hover:text-stone-100"
+              >
+                Browse posts
+              </Link>
+            </div>
+           
+          </div>
+          
         </div>
       </div>
 
-      <div className="animate-section-fade mb-10 flex flex-col gap-6 border-b border-stone-200 pb-10 dark:border-stone-800 lg:flex-row lg:items-end lg:justify-between">
+      <div
+        id="posts"
+        className="animate-section-fade mb-10 flex flex-col gap-6 border-b border-stone-200 pb-10 dark:border-stone-800 lg:flex-row lg:items-end lg:justify-between"
+      >
         <div>
           <h2 className="font-display text-2xl font-semibold text-stone-900 dark:text-stone-50">
             {q ? "Search results" : "Latest posts"}
