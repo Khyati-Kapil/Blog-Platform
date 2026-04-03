@@ -157,6 +157,37 @@ export async function updatePost(postId: string, formData: FormData): Promise<Ac
   return { ok: true };
 }
 
+export async function deletePost(postId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: post } = await supabase.from("posts").select("author_id").eq("id", postId).single();
+  if (!post) return { error: "Post not found." };
+
+  const { data: profile } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const isAdmin = profile?.role === "admin";
+  const isOwner = post.author_id === user.id;
+  if (!isAdmin && !isOwner) {
+    return { error: "Not allowed to delete this post." };
+  }
+
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/");
+  redirect("/");
+}
+
 export async function addComment(postId: string, formData: FormData): Promise<ActionResult> {
   const supabase = await createClient();
   const {

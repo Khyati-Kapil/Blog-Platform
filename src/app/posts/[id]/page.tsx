@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommentForm } from "@/components/CommentForm";
 import { SummaryRegenerator } from "@/components/SummaryRegenerator";
+import { deletePost } from "@/app/posts/actions";
+import { DeletePostButton } from "@/components/DeletePostButton";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function PostPage({
@@ -48,6 +50,7 @@ export default async function PostPage({
   const canEdit =
     user &&
     (profile?.role === "admin" || post.author_id === user.id);
+  const canDelete = canEdit;
 
   const canComment = !!user;
 
@@ -100,12 +103,15 @@ export default async function PostPage({
               <span className="text-stone-300 dark:text-stone-600" aria-hidden>
                 ·
               </span>
-              <Link
-                href={`/posts/${post.id}/edit`}
-                className="font-semibold text-orange-600 underline decoration-orange-600/30 underline-offset-4 hover:decoration-orange-600 dark:text-orange-400 dark:decoration-orange-400/30"
-              >
-                Edit
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`/posts/${post.id}/edit`}
+                  className="font-semibold text-orange-600 underline decoration-orange-600/30 underline-offset-4 hover:decoration-orange-600 dark:text-orange-400 dark:decoration-orange-400/30"
+                >
+                  Edit
+                </Link>
+                {canDelete && <DeletePostButton postId={post.id} />}
+              </div>
             </>
           )}
         </div>
